@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIQuranIntel – Intelligent Quranic Knowledge System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            /* Colors - Clear and distinct */
+            --primary: rgb(0, 0, 0);
+            --primary-dark: rgb(0, 0, 0);
+            --primary-light: rgb(20, 184, 166);
+            --secondary: rgb(212, 175, 55);
+            --secondary-light: rgb(247, 239, 138);
+            --accent: rgb(139, 92, 246);
+            --black: rgb(0, 0, 0);
+            --white: rgb(255, 255, 255);
+            --gray-50: rgb(249, 250, 251);
+            --gray-100: rgb(243, 244, 246);
+            --gray-200: rgb(229, 231, 235);
+            --gray-300: rgb(209, 213, 219);
+            --gray-400: rgb(156, 163, 175);
+            --gray-500: rgb(107, 114, 128);
+            --gray-600: rgb(75, 85, 99);
+            --gray-700: rgb(55, 65, 81);
+            --gray-800: rgb(31, 41, 55);
+            --gray-900: rgb(17, 24, 39);
+            --vivid-cyan: rgb(0, 209, 255);
+            --bright-coral: rgb(255, 107, 107);
+            --lime-green: rgb(163, 230, 53);
+            --hot-pink: rgb(255, 62, 207);
+            --deep-orange: rgb(255, 140, 66);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+
+            /* Typography */
+            --font-primary: 'Inter', sans-serif;
+            --font-arabic: 'Amiri', serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-2xl: 4rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            
+            /* Transitions */
+            --transition: all 0.3s ease;
+        }
+
+        /* ===== DARK MODE VARIABLES ===== */
+        [data-theme="dark"] {
+            --black: #ffffff;
+            --white: #121212;
+            --gray-50: #1a1a1a;
+            --gray-100: #242424;
+            --gray-200: #2d2d2d;
+            --gray-300: #3d3d3d;
+            --gray-400: #9ca3af;
+            --gray-500: #a1a1aa;
+            --gray-600: #d1d5db;
+            --gray-700: #e5e7eb;
+            --gray-800: #f3f4f6;
+            --gray-900: #f9fafb;
+        }
+
+        /* ===== BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--black);
+            background-color: var(--white);
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-sm);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: var(--space-sm);
+            color: var(--black);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: var(--space-sm);
+        }
+
+        .arabic-text {
+            font-family: var(--font-arabic);
+            font-size: 1.5rem;
+            line-height: 2;
+            text-align: right;
+            direction: rtl;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(13, 148, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(13, 148, 136, 0.1);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--white);
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-accent:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-small {
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.875rem;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: var(--space-md);
+        }
+
+        nav a {
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background-color: rgba(13, 148, 136, 0.1);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--black);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: var(--space-xs);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--gray-100);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--black);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.9), rgba(212, 175, 55, 0.8)), 
+                        url('https://images.unsplash.com/photo-1545337267-66aea8ba4b11?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: var(--space-2xl) 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: var(--space-md);
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== ABOUT SECTION ===== */
+        .about {
+            padding: var(--space-2xl) 0;
+            background-color: var(--gray-50);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content h2 {
+            color: var(--black);
+            margin-bottom: var(--space-md);
+        }
+
+        .about-content p {
+            color: var(--gray-700);
+            margin-bottom: var(--space-lg);
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .about-feature {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .about-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .about-feature i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .about-feature h3 {
+            color: var(--black);
+            margin-bottom: var(--space-sm);
+        }
+
+        .about-feature p {
+            color: var(--gray-700);
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            padding: var(--space-2xl) 0;
+            background-color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-title h2 {
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+            color: var(--black);
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--gray-600);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto var(--space-md);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            color: var(--black);
+        }
+
+        .feature-card p {
+            color: var(--gray-700);
+        }
+
+        /* ===== PRICING SECTION ===== */
+        .pricing {
+            padding: var(--space-2xl) 0;
+            background-color: var(--gray-50);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-xl);
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--primary);
+            color: var(--white);
+            padding: var(--space-xs) var(--space-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-bottom-left-radius: var(--radius-md);
+        }
+
+        .pricing-header {
+            padding: var(--space-xl);
+            text-align: center;
+            background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+        }
+
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: var(--space-xs);
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .pricing-period {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .pricing-features {
+            padding: var(--space-xl);
+        }
+
+        .pricing-features ul {
+            list-style: none;
+            margin-bottom: var(--space-lg);
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            color: var(--gray-700);
+        }
+
+        .pricing-features i {
+            color: var(--success);
+            font-size: 0.875rem;
+        }
+
+        .pricing-cta {
+            padding: 0 var(--space-xl) var(--space-xl);
+            text-align: center;
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: var(--space-2xl) 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-lg);
+        }
+
+        /* ===== ADVANCED SEARCH SECTION ===== */
+        .advanced-search {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .search-section {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .search-section h3 {
+            color: var(--black);
+        }
+
+        .search-box {
+            display: flex;
+            margin-bottom: var(--space-md);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+            color: var(--black);
+            background: var(--white);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .search-box button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0 var(--space-md);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .search-box button:hover {
+            background: var(--primary-dark);
+        }
+
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: var(--space-xs);
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: var(--space-sm);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            background: var(--white);
+            color: var(--black);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        /* ===== AI INSIGHTS SECTION ===== */
+        .ai-insights {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .insights-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .insights-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .insight-card {
+            background: var(--gray-50);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--primary);
+        }
+
+        .insight-card h4 {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-sm);
+            color: var(--primary);
+        }
+
+        .insight-card p {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+
+        .insight-card ul {
+            padding-left: var(--space-md);
+            color: var(--gray-700);
+        }
+
+        .insight-card li {
+            margin-bottom: var(--space-xs);
+        }
+
+        /* ===== THEMATIC ANALYSIS SECTION ===== */
+        .thematic-analysis {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .theme-card {
+            background: var(--gray-50);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .theme-card:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+        }
+
+        .theme-card.active {
+            background: rgba(13, 148, 136, 0.1);
+            border: 2px solid var(--primary);
+        }
+
+        .theme-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .theme-card h4 {
+            color: var(--black);
+            margin-bottom: var(--space-xs);
+        }
+
+        .theme-card p {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        /* ===== SURAHS SELECTOR STYLES ===== */
+        .surahs-selector {
+            background: var(--white);
+            padding: var(--space-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .surahs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .surahs-search {
+            position: relative;
+            margin-bottom: var(--space-md);
+        }
+
+        .surahs-search input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+            color: var(--black);
+            background: var(--white);
+        }
+
+        .surahs-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .surahs-search i {
+            position: absolute;
+            right: var(--space-sm);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .surahs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: var(--space-sm);
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: var(--space-md);
+        }
+
+        .surah-card {
+            background: var(--gray-50);
+            padding: var(--space-sm);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .surah-card:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+        }
+
+        .surah-card.bookmarked {
+            border-color: var(--primary);
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .surah-number {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .surah-name {
+            font-weight: 500;
+            color: var(--black);
+            margin-bottom: var(--space-xs);
+        }
+
+        .surah-name-arabic {
+            font-family: var(--font-arabic);
+            font-size: 1.2rem;
+            color: var(--gray-700);
+        }
+
+        .surah-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-md);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--gray-900);
+            color: var(--white);
+            padding: var(--space-2xl) 0 var(--space-lg);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .footer-column h3 {
+            color: var(--white);
+            margin-bottom: var(--space-md);
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--gray-700);
+            color: var(--gray-400);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+            
+            .pricing-card.popular:hover {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            nav.active ul {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                padding: var(--space-md);
+                box-shadow: var(--shadow-lg);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .search-filters {
+                flex-direction: column;
+            }
+            
+            .surahs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .themes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .surahs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .themes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-quran" aria-hidden="true"></i>
+                    <h1>AIQuranIntel</h1>
+                </div>
+                
+                <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Home</a></li>
+                        <li><a href="#search">Search</a></li>
+                        <li><a href="#surahs">Surahs</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Intelligent Quranic Knowledge System</h2>
+                <p>Explore the Quran with AI-powered insights, authentic tafsir, and comprehensive thematic analysis in a modern, respectful interface.</p>
+                <div class="hero-buttons">
+                    <a href="#search" class="btn btn-primary">
+                        <i class="fas fa-search" aria-hidden="true"></i> Start Exploring
+                    </a>
+                    <a href="#surahs" class="btn btn-secondary">
+                        <i class="fas fa-bookmark" aria-hidden="true"></i> Browse Surahs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About AIQuranIntel</h2>
+                <p>Our mission is to make Quranic knowledge accessible through modern technology while preserving the authenticity and depth of traditional scholarship.</p>
+                
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-brain" aria-hidden="true"></i>
+                        <h3>AI-Powered Insights</h3>
+                        <p>Advanced algorithms help you discover connections and themes across the Quran.</p>
+                    </div>
+                    
+                    <div class="about-feature">
+                        <i class="fas fa-book" aria-hidden="true"></i>
+                        <h3>Authentic Scholarship</h3>
+                        <p>Access classical tafsir from renowned scholars with proper attribution.</p>
+                    </div>
+                    
+                    <div class="about-feature">
+                        <i class="fas fa-globe" aria-hidden="true"></i>
+                        <h3>Global Access</h3>
+                        <p>Available to seekers of knowledge worldwide in multiple languages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Features</h2>
+                <p>Discover the comprehensive tools designed to enhance your understanding of the Quran</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain" aria-hidden="true"></i>
+                    </div>
+                    <h3>AI-Powered Search</h3>
+                    <p>Find verses by keywords, concepts, or themes with intelligent semantic search technology.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open" aria-hidden="true"></i>
+                    </div>
+                    <h3>Authentic Tafsir</h3>
+                    <p>Access classical and contemporary interpretations from renowned scholars with proper citations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette" aria-hidden="true"></i>
+                    </div>
+                    <h3>Thematic Exploration</h3>
+                    <p>Explore Quranic themes like mercy, justice, patience, and more through organized collections.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language" aria-hidden="true"></i>
+                    </div>
+                    <h3>Linguistic Analysis</h3>
+                    <p>Dive deep into Arabic language with word-by-word breakdowns and root analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bookmark" aria-hidden="true"></i>
+                    </div>
+                    <h3>Personal Bookmarks</h3>
+                    <p>Save your favorite verses, tafsir notes, and thematic collections for later reference.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags" aria-hidden="true"></i>
+                    </div>
+                    <h3>Flexible Pricing</h3>
+                    <p>Choose from free or premium plans that suit your Quranic study needs and budget.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Search Section -->
+    <section class="pricing" id="search">
+        <div class="container">
+            <div class="section-title">
+                <h2>Advanced Quranic Search</h2>
+                <p>Discover deep insights and connections with AI-powered search technology</p>
+            </div>
+            
+            <div class="advanced-search">
+                <div class="search-section">
+                    <h3>Intelligent Search</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Ask a question or search by concept, theme, or keyword...">
+                        <button id="searchButton" class="btn-primary">
+                            <i class="fas fa-search" aria-hidden="true"></i> Search
+                        </button>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label for="searchType">Search Type</label>
+                            <select id="searchType">
+                                <option value="semantic">Semantic Search</option>
+                                <option value="thematic">Thematic Search</option>
+                                <option value="linguistic">Linguistic Analysis</option>
+                                <option value="comparative">Comparative Study</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="language">Language</label>
+                            <select id="language">
+                                <option value="ar">Arabic</option>
+                                <option value="bn">Bengali</option>
+                                <option value="de">German</option>
+                                <option value="el">Greek</option>
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fa">Persian</option>
+                                <option value="fr">French</option>
+                                <option value="hi">Hindi</option>
+                                <option value="it">Italian</option>
+                                <option value="id">Indonesian</option>
+                                <option value="ja">Japanese</option>
+                                <option value="ko">Korean</option>
+                                <option value="ms">Malay</option>
+                                <option value="pt">Portuguese</option>
+                                <option value="ru">Russian</option>
+                                <option value="sv">Swedish</option>
+                                <option value="tr">Turkish</option>
+                                <option value="ur">Urdu</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="depth">Analysis Depth</label>
+                            <select id="depth">
+                                <option value="basic">Basic</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="scholarly">Scholarly</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Insights Section -->
+                <div class="ai-insights">
+                    <div class="insights-header">
+                        <h3>AI-Generated Insights</h3>
+                        <button class="btn btn-secondary btn-small" id="refreshInsights">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i> Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="insights-content">
+                        <div class="insight-card">
+                            <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Conceptual Connections</h4>
+                            <p>Your search relates to core Quranic concepts of divine mercy and guidance. The term appears in multiple contexts emphasizing Allah's attributes and relationship with creation.</p>
+                            <ul>
+                                <li>Connected to 23 verses across 12 surahs</li>
+                                <li>Primary themes: Mercy, Guidance, Divine Attributes</li>
+                                <li>Most relevant: Ar-Rahman, Al-Fatihah, Al-Baqarah</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h4><i class="fas fa-project-diagram" aria-hidden="true"></i> Thematic Analysis</h4>
+                            <p>This concept forms part of a larger thematic network including divine names, creation purpose, and spiritual guidance. Key related concepts include:</p>
+                            <ul>
+                                <li>Divine Mercy (Rahmah)</li>
+                                <li>Guidance (Hidayah)</li>
+                                <li>Compassion (Rauf)</li>
+                                <li>Forgiveness (Ghafur)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h4><i class="fas fa-chart-line" aria-hidden="true"></i> Linguistic Patterns</h4>
+                            <p>The root letters (ر-ح-م) appear in various forms throughout the Quran, creating a rich semantic field around the concept of mercy and compassion.</p>
+                            <ul>
+                                <li>Root frequency: 114 occurrences</li>
+                                <li>Derived forms: 8 different patterns</li>
+                                <li>Most common: Ar-Rahman, Ar-Rahim</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thematic Analysis Section -->
+                <div class="thematic-analysis">
+                    <h3>Thematic Exploration</h3>
+                    <p>Explore related Quranic themes and concepts</p>
+                    
+                    <div class="themes-grid">
+                        <div class="theme-card active">
+                            <div class="theme-icon">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </div>
+                            <h4>Mercy & Compassion</h4>
+                            <p>Divine attributes and human compassion</p>
+                        </div>
+                        
+                        <div class="theme-card">
+                            <div class="theme-icon">
+                                <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                            </div>
+                            <h4>Justice & Equity</h4>
+                            <p>Divine justice and social equity</p>
+                        </div>
+                        
+                        <div class="theme-card">
+                            <div class="theme-icon">
+                                <i class="fas fa-book" aria-hidden="true"></i>
+                            </div>
+                            <h4>Guidance</h4>
+                            <p>Divine guidance and human responsibility</p>
+                        </div>
+                        
+                        <div class="theme-card">
+                            <div class="theme-icon">
+                                <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
+                            </div>
+                            <h4>Forgiveness</h4>
+                            <p>Divine forgiveness and human repentance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Surahs Section -->
+    <section class="pricing" id="surahs">
+        <div class="container">
+            <div class="section-title">
+                <h2>Quranic Surahs</h2>
+                <p>Browse and bookmark all 114 Surahs of the Holy Quran</p>
+            </div>
+            
+            <div class="surahs-selector">
+                <div class="surahs-header">
+                    <h3>Select Surahs to Bookmark</h3>
+                    <span id="surahsCount">0 bookmarked</span>
+                </div>
+                
+                <div class="surahs-search">
+                    <input type="text" id="surahSearch" placeholder="Search surahs by name...">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                </div>
+                
+                <div class="surahs-grid" id="surahsGrid">
+                    <!-- Surah cards will be populated here -->
+                </div>
+                
+                <div class="surah-actions">
+                    <button class="btn btn-secondary" id="selectAllSurahs">
+                        <i class="fas fa-check-double" aria-hidden="true"></i> Select All
+                    </button>
+                    <button class="btn btn-primary" id="saveBookmarks">
+                        <i class="fas fa-save" aria-hidden="true"></i> Save Bookmarks
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Flexible Pricing Plans</h2>
+                <p>Choose the plan that best fits your Quranic study needs</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Basic</div>
+                        <div class="pricing-price">$0</div>
+                        <div class="pricing-period">Forever Free</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Basic Quran Search</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Limited AI Insights</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> 5 Bookmarks</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Community Support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <button class="btn btn-secondary btn-block">Choose Plan</button>
+                    </div>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <div class="pricing-name">Scholar</div>
+                        <div class="pricing-price">$9<span class="pricing-period">/month</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Advanced Quran Search</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Full AI Insights</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Unlimited Bookmarks</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Multiple Translations</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Priority Support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <button class="btn btn-primary btn-block">Choose Plan</button>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-name">Institution</div>
+                        <div class="pricing-price">$29<span class="pricing-period">/month</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Everything in Scholar</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Multiple User Accounts</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> API Access</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Custom Branding</li>
+                            <li><i class="fas fa-check" aria-hidden="true"></i> Dedicated Support</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-cta">
+                        <button class="btn btn-secondary btn-block">Choose Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>AIQuranIntel</h3>
+                    <p>An intelligent Quranic knowledge system designed to enhance understanding through AI-powered tools and authentic scholarly resources.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-home" aria-hidden="true"></i> Home</a></li>
+                        <li><a href="#search"><i class="fas fa-search" aria-hidden="true"></i> Search</a></li>
+                        <li><a href="#surahs"><i class="fas fa-bookmark" aria-hidden="true"></i> Surahs</a></li>
+                        <li><a href="#pricing"><i class="fas fa-tags" aria-hidden="true"></i> Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-database" aria-hidden="true"></i> Quran Database</a></li>
+                        <li><a href="#"><i class="fas fa-graduation-cap" aria-hidden="true"></i> Tafsir Collections</a></li>
+                        <li><a href="#"><i class="fas fa-language" aria-hidden="true"></i> Translations</a></li>
+                        <li><a href="#"><i class="fas fa-tools" aria-hidden="true"></i> API Access</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-question-circle" aria-hidden="true"></i> Help Center</a></li>
+                        <li><a href="#"><i class="fas fa-envelope" aria-hidden="true"></i> Contact Us</a></li>
+                        <li><a href="#"><i class="fas fa-bug" aria-hidden="true"></i> Report Issue</a></li>
+                        <li><a href="#"><i class="fas fa-lightbulb" aria-hidden="true"></i> Suggestions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 AIQURANINTEL. All rights reserved. | Designed with respect for Islamic traditions and modern technology</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== QURANIC SURAHS DATA =====
+        const quranSurahs = [
+            { number: 1, name: "Al-Fatihah", arabic: "الفاتحة", verses: 7, type: "Meccan" },
+            { number: 2, name: "Al-Baqarah", arabic: "البقرة", verses: 286, type: "Medinan" },
+            { number: 3, name: "Aal-E-Imran", arabic: "آل عمران", verses: 200, type: "Medinan" },
+            { number: 4, name: "An-Nisa", arabic: "النساء", verses: 176, type: "Medinan" },
+            { number: 5, name: "Al-Ma'idah", arabic: "المائدة", verses: 120, type: "Medinan" },
+            { number: 6, name: "Al-An'am", arabic: "الأنعام", verses: 165, type: "Meccan" },
+            { number: 7, name: "Al-A'raf", arabic: "الأعراف", verses: 206, type: "Meccan" },
+            { number: 8, name: "Al-Anfal", arabic: "الأنفال", verses: 75, type: "Medinan" },
+            { number: 9, name: "At-Tawbah", arabic: "التوبة", verses: 129, type: "Medinan" },
+            { number: 10, name: "Yunus", arabic: "يونس", verses: 109, type: "Meccan" },
+            { number: 11, name: "Hud", arabic: "هود", verses: 123, type: "Meccan" },
+            { number: 12, name: "Yusuf", arabic: "يوسف", verses: 111, type: "Meccan" },
+            { number: 13, name: "Ar-Ra'd", arabic: "الرعد", verses: 43, type: "Medinan" },
+            { number: 14, name: "Ibrahim", arabic: "إبراهيم", verses: 52, type: "Meccan" },
+            { number: 15, name: "Al-Hijr", arabic: "الحجر", verses: 99, type: "Meccan" },
+            { number: 16, name: "An-Nahl", arabic: "النحل", verses: 128, type: "Meccan" },
+            { number: 17, name: "Al-Isra", arabic: "الإسراء", verses: 111, type: "Meccan" },
+            { number: 18, name: "Al-Kahf", arabic: "الكهف", verses: 110, type: "Meccan" },
+            { number: 19, name: "Maryam", arabic: "مريم", verses: 98, type: "Meccan" },
+            { number: 20, name: "Ta-Ha", arabic: "طه", verses: 135, type: "Meccan" },
+            // Additional surahs would be added here in a complete implementation
+        ];
+
+        // ===== DOCUMENT READY =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // ===== MOBILE MENU TOGGLE =====
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const nav = document.querySelector('nav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                nav.classList.toggle('active');
+            });
+            
+            // ===== THEME TOGGLE =====
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            // Check for saved theme or prefer-color-scheme
+            const savedTheme = localStorage.getItem('theme') || 
+                              (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            // Apply the saved theme
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                if (theme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            }
+            
+            // ===== ADVANCED SEARCH FUNCTIONALITY =====
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const refreshInsights = document.getElementById('refreshInsights');
+            const themeCards = document.querySelectorAll('.theme-card');
+            
+            function performSearch() {
+                const query = searchInput.value.trim();
+                
+                if (query) {
+                    // Show loading state
+                    const originalText = searchButton.innerHTML;
+                    searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+                    searchButton.disabled = true;
+                    
+                    // Simulate AI analysis
+                    setTimeout(() => {
+                        searchButton.innerHTML = originalText;
+                        searchButton.disabled = false;
+                        
+                        // Update insights based on search
+                        updateAIInsights(query);
+                    }, 2000);
+                } else {
+                    alert('Please enter a search term or question.');
+                }
+            }
+            
+            function updateAIInsights(query) {
+                // In a real implementation, this would fetch AI-generated insights
+                // For demo purposes, we'll update the content dynamically
+                const insightCards = document.querySelectorAll('.insight-card');
+                
+                if (insightCards.length > 0) {
+                    insightCards[0].querySelector('p').textContent = 
+                        `Your search for "${query}" relates to core Quranic concepts. The AI has identified connections across multiple verses and themes.`;
+                    
+                    insightCards[1].querySelector('p').textContent = 
+                        `This concept forms part of a larger thematic network. The AI has mapped relationships with other key Quranic concepts.`;
+                    
+                    insightCards[2].querySelector('p').textContent = 
+                        `Linguistic analysis reveals patterns in how this concept is expressed throughout the Quran in various forms and contexts.`;
+                }
+            }
+            
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            refreshInsights.addEventListener('click', function() {
+                const query = searchInput.value.trim() || 'mercy';
+                updateAIInsights(query);
+                
+                // Show refresh feedback
+                const originalText = refreshInsights.innerHTML;
+                refreshInsights.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Refreshed';
+                setTimeout(() => {
+                    refreshInsights.innerHTML = originalText;
+                }, 1500);
+            });
+            
+            // Theme card interactions
+            themeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    themeCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update search based on selected theme
+                    const themeName = this.querySelector('h4').textContent;
+                    searchInput.value = `Explore ${themeName} in the Quran`;
+                    performSearch();
+                });
+            });
+            
+            // ===== SURAHS SELECTOR FUNCTIONALITY =====
+            const surahsGrid = document.getElementById('surahsGrid');
+            const surahSearch = document.getElementById('surahSearch');
+            const selectAllSurahs = document.getElementById('selectAllSurahs');
+            const saveBookmarks = document.getElementById('saveBookmarks');
+            const surahsCount = document.getElementById('surahsCount');
+            
+            let bookmarkedSurahs = JSON.parse(localStorage.getItem('bookmarkedSurahs')) || [];
+            
+            // Initialize surahs grid
+            function initializeSurahsGrid() {
+                surahsGrid.innerHTML = '';
+                quranSurahs.forEach(surah => {
+                    const surahCard = createSurahCard(surah);
+                    surahsGrid.appendChild(surahCard);
+                });
+                updateSurahsCount();
+            }
+            
+            // Create surah card element
+            function createSurahCard(surah) {
+                const card = document.createElement('div');
+                card.className = `surah-card ${bookmarkedSurahs.includes(surah.number) ? 'bookmarked' : ''}`;
+                card.setAttribute('data-surah', surah.number);
+                
+                card.innerHTML = `
+                    <div class="surah-number">${surah.number}</div>
+                    <div class="surah-name">${surah.name}</div>
+                    <div class="surah-name-arabic">${surah.arabic}</div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    toggleBookmarkSurah(surah.number);
+                });
+                
+                return card;
+            }
+            
+            // Toggle bookmark for a surah
+            function toggleBookmarkSurah(surahNumber) {
+                if (bookmarkedSurahs.includes(surahNumber)) {
+                    bookmarkedSurahs = bookmarkedSurahs.filter(num => num !== surahNumber);
+                } else {
+                    bookmarkedSurahs.push(surahNumber);
+                }
+                
+                // Update UI
+                const surahCard = document.querySelector(`.surah-card[data-surah="${surahNumber}"]`);
+                surahCard.classList.toggle('bookmarked');
+                
+                updateSurahsCount();
+                saveBookmarksToStorage();
+            }
+            
+            // Select all surahs
+            selectAllSurahs.addEventListener('click', function() {
+                const allSurahNumbers = quranSurahs.map(surah => surah.number);
+                
+                if (bookmarkedSurahs.length === allSurahNumbers.length) {
+                    // Deselect all
+                    bookmarkedSurahs = [];
+                } else {
+                    // Select all
+                    bookmarkedSurahs = [...allSurahNumbers];
+                }
+                
+                // Update UI
+                initializeSurahsGrid();
+                updateSurahsCount();
+                saveBookmarksToStorage();
+            });
+            
+            // Save bookmarks
+            saveBookmarks.addEventListener('click', function() {
+                saveBookmarksToStorage();
+                alert(`Successfully bookmarked ${bookmarkedSurahs.length} surahs!`);
+            });
+            
+            // Search surahs
+            surahSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const cards = surahsGrid.getElementsByClassName('surah-card');
+                
+                Array.from(cards).forEach(card => {
+                    const name = card.querySelector('.surah-name').textContent.toLowerCase();
+                    const arabic = card.querySelector('.surah-name-arabic').textContent;
+                    const matches = name.includes(searchTerm) || arabic.includes(searchTerm);
+                    card.style.display = matches ? 'block' : 'none';
+                });
+            });
+            
+            // Update surahs count
+            function updateSurahsCount() {
+                surahsCount.textContent = `${bookmarkedSurahs.length} bookmarked`;
+                
+                // Update select all button text
+                if (bookmarkedSurahs.length === quranSurahs.length) {
+                    selectAllSurahs.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i> Deselect All';
+                } else {
+                    selectAllSurahs.innerHTML = '<i class="fas fa-check-double" aria-hidden="true"></i> Select All';
+                }
+            }
+            
+            // Save bookmarks to localStorage
+            function saveBookmarksToStorage() {
+                localStorage.setItem('bookmarkedSurahs', JSON.stringify(bookmarkedSurahs));
+            }
+            
+            // Initialize surahs grid
+            initializeSurahsGrid();
+            
+            // ===== SMOOTH SCROLLING =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // ===== RESPONSIVE NAVIGATION =====
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    nav.classList.remove('active');
+                }
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!nav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    nav.classList.remove('active');
+                }
+            });
+            
+            // ===== INITIALIZATION COMPLETE =====
+            console.log('AIQuranIntel initialized successfully');
+        });
+    </script>
+</body>
+</html>
